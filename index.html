@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nova Atelier is a premium ecommerce experience for modern apparel, accessories, and limited edition lifestyle essentials.">
+    <title>Nova Atelier | Premium Commerce</title>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="loader" data-loader>
+        <div class="loader-mark">N</div>
+        <span>Curating your edit</span>
+    </div>
+
+    <nav class="navbar navbar-expand-lg site-header" data-header aria-label="Primary navigation">
+        <div class="container-fluid px-2">
+            <a class="navbar-brand brand" href="#top" aria-label="Nova Atelier home">
+                <span class="brand-mark">N</span>
+                <span>Nova Atelier</span>
+            </a>
+            <button class="navbar-toggler icon-button d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Open menu" data-bs-title="Menu" data-bs-toggle-tooltip>
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
+                <ul class="navbar-nav main-nav">
+                    <li class="nav-item"><a class="nav-link" href="#top"><i class="fa-solid fa-house"></i><span>Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products"><i class="fa-solid fa-bag-shopping"></i><span>Shop</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#collections"><i class="fa-solid fa-layer-group"></i><span>Categories</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#collections"><i class="fa-solid fa-gem"></i><span>Collections</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#assistant"><i class="fa-solid fa-robot"></i><span>AI Edit</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#reviews"><i class="fa-solid fa-newspaper"></i><span>Blog</span></a></li>
+                </ul>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu" data-bs-title="Account" data-bs-toggle-tooltip>
+                        <i class="fa-solid fa-user" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end account-menu">
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-box"></i>Orders</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-heart"></i>Wishlist <span class="badge text-bg-dark ms-auto" data-wishlist-count>0</span></a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i>Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+                    </ul>
+                </div>
+                <button class="icon-button" type="button" data-theme-toggle aria-label="Toggle theme" data-bs-title="Toggle theme" data-bs-toggle-tooltip>
+                    <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+                </button>
+                <button class="icon-button cart-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartCanvas" aria-controls="cartCanvas" aria-label="Open cart" data-bs-title="Cart" data-bs-toggle-tooltip>
+                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                    <span class="badge rounded-pill counter-badge" data-cart-count>0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="offcanvas offcanvas-start mobile-menu" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header">
+            <h2 class="offcanvas-title brand" id="mobileMenuLabel"><span class="brand-mark">N</span><span>Nova Atelier</span></h2>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <nav class="mobile-nav" aria-label="Mobile navigation">
+                <a href="#top" data-bs-dismiss="offcanvas"><i class="fa-solid fa-house"></i>Home</a>
+                <a href="#products" data-bs-dismiss="offcanvas"><i class="fa-solid fa-bag-shopping"></i>Shop</a>
+                <a href="#collections" data-bs-dismiss="offcanvas"><i class="fa-solid fa-layer-group"></i>Categories</a>
+                <a href="#collections" data-bs-dismiss="offcanvas"><i class="fa-solid fa-gem"></i>Collections</a>
+                <a href="#story" data-bs-dismiss="offcanvas"><i class="fa-solid fa-circle-info"></i>About</a>
+                <a href="#features" data-bs-dismiss="offcanvas"><i class="fa-solid fa-briefcase"></i>Services</a>
+                <a href="#footer" data-bs-dismiss="offcanvas"><i class="fa-solid fa-envelope"></i>Contact</a>
+            </nav>
+        </div>
+    </div>
+
+    <main id="top">
+        <section class="hero container-fluid section-observe">
+            <div class="hero-media" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1800&q=85" alt="">
+            </div>
+            <div class="container hero-inner">
+                <div class="row align-items-center min-vh-100 g-4">
+                    <div class="col-lg-8 hero-copy">
+                        <p class="eyebrow">Summer 2026 capsule</p>
+                        <h1>Experience the Future of Shopping</h1>
+                        <p>Premium products crafted for modern lifestyles, personalized by intelligent curation and delivered with atelier-level detail.</p>
+                        <div class="hero-actions">
+                            <a class="button primary magnetic" href="#products"><i class="fa-solid fa-cart-shopping"></i>Shop Now</a>
+                            <a class="button ghost magnetic" href="#collections"><i class="fa-solid fa-arrow-right"></i>Explore Collection</a>
+                            <a class="button ghost magnetic" href="#story"><i class="fa-solid fa-circle-chevron-right"></i>Learn More</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-flex justify-content-lg-end">
+                        <article class="floating-product glass card" data-tilt>
+                            <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=700&q=85" alt="Tailored ivory jacket">
+                            <div>
+                                <span class="badge text-bg-light">Limited Edition</span>
+                                <h2>Aura Tailored Jacket</h2>
+                                <p>$248</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <a class="scroll-cue" href="#collections" aria-label="Scroll to collections"><span></span></a>
+        </section>
+
+        <section class="container section section-observe" id="features" aria-label="Service features">
+            <div class="row g-3 feature-grid">
+                <div class="col-6 col-lg-2"><div class="feature-card"><i class="fa-solid fa-truck-fast"></i><strong>Fast Delivery</strong><span>24h dispatch</span></div></div>
+                <div class="col-6 col-lg-2"><div class="feature-card"><i class="fa-solid fa-shield-halved"></i><strong>Secure Payments</strong><span>Stripe ready</span></div></div>
+                <div class="col-6 col-lg-2"><div class="feature-card"><i class="fa-solid fa-award"></i><strong>Premium Quality</strong><span>Atelier finish</span></div></div>
+                <div class="col-6 col-lg-2"><div class="feature-card"><i class="fa-solid fa-headset"></i><strong>Support</strong><span>Concierge care</span></div></div>
+                <div class="col-6 col-lg-2"><div class="feature-card"><i class="fa-solid fa-rotate-left"></i><strong>Easy Returns</strong><span>30-day window</span></div></div>
+                <div class="col-6 col-lg-2"><div class="feature-card"><i class="fa-solid fa-earth-americas"></i><strong>Global Shipping</strong><span>38 countries</span></div></div>
+            </div>
+        </section>
+
+        <section class="container section section-observe" id="collections">
+            <div class="section-heading">
+                <p class="eyebrow"><i class="fa-solid fa-gem"></i> Featured collections</p>
+                <h2>Curated edits for every version of your day.</h2>
+            </div>
+            <div class="bento-grid">
+                <a class="collection-card large" href="#products"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=85" alt="Women's collection editorial look"><span>Women</span><strong>Soft tailoring, sculpted essentials</strong></a>
+                <a class="collection-card" href="#products"><img src="https://images.unsplash.com/photo-1516826957135-700dedea698c?auto=format&fit=crop&w=900&q=85" alt="Men's fashion collection"><span>Men</span><strong>Utility with polish</strong></a>
+                <a class="collection-card tall" href="#products"><img src="https://images.unsplash.com/photo-1506629905607-d9c297d31d30?auto=format&fit=crop&w=900&q=85" alt="Luxury leather accessories"><span>Accessories</span><strong>Objects that finish the look</strong></a>
+                <a class="collection-card" href="#products"><img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=85" alt="New arrival fashion detail"><span>New Arrivals</span><strong>Just landed</strong></a>
+                <a class="collection-card wide" href="#products"><img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1200&q=85" alt="Best sellers fashion campaign"><span>Best Sellers</span><strong>Pieces with a waiting list</strong></a>
+                <a class="collection-card" href="#products"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=900&q=85" alt="Limited edition fashion look"><span>Limited Edition</span><strong>Small-batch drops</strong></a>
+            </div>
+        </section>
+
+        <section class="container section products-section section-observe" id="products">
+            <div class="row g-4 align-items-end mb-4">
+                <div class="col-lg-7 section-heading mb-0">
+                    <p class="eyebrow"><i class="fa-solid fa-bag-shopping"></i> Best selling products</p>
+                    <h2>Shop the current obsession.</h2>
+                </div>
+                <div class="col-lg-5">
+                    <div class="toolbar justify-content-lg-end" role="group" aria-label="Product filters">
+                        <button class="filter-pill active" type="button" data-filter="all"><i class="fa-solid fa-sliders"></i>All</button>
+                        <button class="filter-pill" type="button" data-filter="apparel">Apparel</button>
+                        <button class="filter-pill" type="button" data-filter="accessory">Accessories</button>
+                        <button class="filter-pill" type="button" data-filter="limited">Limited</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 search-row">
+                <div class="col-lg-7">
+                    <label class="search-box w-100">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <input type="search" placeholder="Search products, colors, materials" data-search>
+                    </label>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <button class="utility-button w-100" type="button" data-bs-title="Voice search" data-bs-toggle-tooltip><i class="fa-solid fa-microphone"></i><span>Voice</span></button>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <label class="sort-box w-100">
+                        <i class="fa-solid fa-arrow-down-wide-short" aria-hidden="true"></i>
+                        <select data-sort aria-label="Sort products">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price low to high</option>
+                            <option value="price-high">Price high to low</option>
+                            <option value="rating">Top rated</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div class="row g-4 product-grid" data-products></div>
+        </section>
+
+        <section class="container section story section-observe" id="story" aria-label="Scroll storytelling">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <div class="story-visual"><img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1500&q=85" alt="Model wearing premium apparel in a studio"></div>
+                </div>
+                <div class="col-lg-6 story-copy">
+                    <p class="eyebrow"><i class="fa-solid fa-circle-info"></i> Designed around movement</p>
+                    <h2>From first sketch to final dispatch, every product is built to feel effortless.</h2>
+                    <p>Scroll-responsive reveals, responsive imagery, and restrained motion keep the experience fast while still feeling cinematic.</p>
+                    <div class="row g-3 story-stats">
+                        <div class="col-4"><div><i class="fa-solid fa-users"></i><strong data-count-up="124000">0</strong><span>Customers</span></div></div>
+                        <div class="col-4"><div><i class="fa-solid fa-box-open"></i><strong data-count-up="780000">0</strong><span>Orders</span></div></div>
+                        <div class="col-4"><div><i class="fa-solid fa-globe"></i><strong data-count-up="38">0</strong><span>Countries</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container section assistant-section section-observe" id="assistant">
+            <div class="assistant-panel glass row g-4">
+                <div class="col-lg-5 assistant-copy">
+                    <p class="eyebrow"><i class="fa-solid fa-robot"></i> AI shopping assistant</p>
+                    <h2>Your next edit, predicted before you search.</h2>
+                    <p>Choose a mood and Nova recommends products, colorways, and fast pairings from the current catalog.</p>
+                    <div class="ai-icons">
+                        <span><i class="fa-solid fa-wand-magic-sparkles"></i>Smart Suggestions</span>
+                        <span><i class="fa-solid fa-user-gear"></i>Personalization</span>
+                        <span><i class="fa-solid fa-chart-line"></i>Analytics</span>
+                    </div>
+                    <div class="mood-tabs btn-group" role="group" aria-label="Recommendation mood">
+                        <button class="active" type="button" data-mood="work">Work</button>
+                        <button type="button" data-mood="weekend">Weekend</button>
+                        <button type="button" data-mood="evening">Evening</button>
+                    </div>
+                </div>
+                <div class="col-lg-7"><div class="assistant-card" data-recommendation></div></div>
+            </div>
+        </section>
+
+        <section class="container section showcase section-observe">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-5 showcase-copy">
+                    <p class="eyebrow"><i class="fa-solid fa-cube"></i> Premium product showcase</p>
+                    <h2>Inspect the details before they arrive.</h2>
+                    <p>Hover to rotate the feature piece, switch colorways, and preview tactile product notes without leaving the page.</p>
+                    <div class="swatches" role="group" aria-label="Select color">
+                        <button class="swatch active" style="--swatch:#f1eee9" type="button" data-swatch="Ivory" aria-label="Ivory"></button>
+                        <button class="swatch" style="--swatch:#1c1c1a" type="button" data-swatch="Noir" aria-label="Noir"></button>
+                        <button class="swatch" style="--swatch:#8c6b4f" type="button" data-swatch="Cedar" aria-label="Cedar"></button>
+                    </div>
+                    <span class="selected-color" data-selected-color>Ivory selected</span>
+                    <div class="accordion feature-accordion" id="productAccordion">
+                        <div class="accordion-item">
+                            <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#detailOne">Materials</button></h3>
+                            <div id="detailOne" class="accordion-collapse collapse show" data-bs-parent="#productAccordion"><div class="accordion-body">Water-resistant shell, recycled lining, and Italian hardware.</div></div>
+                        </div>
+                        <div class="accordion-item">
+                            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#detailTwo">Care</button></h3>
+                            <div id="detailTwo" class="accordion-collapse collapse" data-bs-parent="#productAccordion"><div class="accordion-body">Spot clean and air dry to preserve structure.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="product-viewer" data-tilt>
+                        <img src="https://images.unsplash.com/photo-1520975954732-35dd22299614?auto=format&fit=crop&w=1100&q=85" alt="Premium product viewer jacket">
+                        <div class="feature-dot one">Water-resistant shell</div>
+                        <div class="feature-dot two">Italian hardware</div>
+                        <div class="feature-dot three">Recycled lining</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container section reviews-section section-observe" id="reviews">
+            <div class="section-heading">
+                <p class="eyebrow"><i class="fa-solid fa-quote-left"></i> Customer reviews</p>
+                <h2>Quiet luxury, loudly loved.</h2>
+            </div>
+            <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row g-3">
+                            <div class="col-md-4"><article class="review-card card"><strong><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></strong><p>"The checkout felt instant, and the jacket looks even better in person."</p><span><i class="fa-solid fa-circle-check"></i>Maya R.</span></article></div>
+                            <div class="col-md-4"><article class="review-card card"><strong><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></strong><p>"Personal recommendations were accurate in the best way."</p><span><i class="fa-solid fa-circle-check"></i>Daniel K.</span></article></div>
+                            <div class="col-md-4"><article class="review-card card"><strong><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></strong><p>"Premium without being precious. The details are immaculate."</p><span><i class="fa-solid fa-circle-check"></i>Priya S.</span></article></div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row g-3">
+                            <div class="col-md-4"><article class="review-card card"><strong><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></strong><p>"I found a full weekend wardrobe in under five minutes."</p><span><i class="fa-solid fa-circle-check"></i>Alex M.</span></article></div>
+                            <div class="col-md-4"><article class="review-card card"><strong><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></strong><p>"The product pages make comparing pieces genuinely easy."</p><span><i class="fa-solid fa-circle-check"></i>Sam T.</span></article></div>
+                            <div class="col-md-4"><article class="review-card card"><strong><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></strong><p>"The support team handled my exchange before lunch."</p><span><i class="fa-solid fa-circle-check"></i>Noor A.</span></article></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel" data-bs-slide="prev" aria-label="Previous reviews"><span class="carousel-control-prev-icon"></span></button>
+                <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel" data-bs-slide="next" aria-label="Next reviews"><span class="carousel-control-next-icon"></span></button>
+            </div>
+        </section>
+
+        <section class="newsletter section-observe">
+            <div class="newsletter-card glass">
+                <p class="eyebrow"><i class="fa-solid fa-envelope"></i> Private list</p>
+                <h2>Get early access to limited drops.</h2>
+                <form class="row g-2 justify-content-center" data-newsletter>
+                    <div class="col-md-8"><input class="form-control" type="email" placeholder="Email address" required></div>
+                    <div class="col-md-auto"><button class="button primary w-100" type="submit"><i class="fa-solid fa-arrow-right"></i>Join</button></div>
+                </form>
+                <p class="form-message" data-form-message role="status"></p>
+            </div>
+        </section>
+    </main>
+
+    <div class="offcanvas offcanvas-end cart-canvas" tabindex="-1" id="cartCanvas" aria-labelledby="cartCanvasLabel">
+        <div class="offcanvas-header">
+            <h2 class="offcanvas-title" id="cartCanvasLabel"><i class="fa-solid fa-cart-shopping"></i>Your Cart</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body cart-panel">
+            <div class="cart-items" data-cart-items></div>
+            <div class="coupon-row">
+                <input type="text" placeholder="Coupon code" data-coupon>
+                <button type="button" data-apply-coupon>Apply</button>
+            </div>
+            <div class="cart-total">
+                <span>Total</span>
+                <strong data-cart-total>$0</strong>
+            </div>
+            <button class="button primary checkout" type="button"><i class="fa-solid fa-credit-card"></i>Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content quick-view">
+                <button type="button" class="icon-button modal-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                <div id="quickViewLabel" class="visually-hidden">Product quick view</div>
+                <div data-modal-content></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast align-items-center site-toast" role="status" aria-live="polite" aria-atomic="true" data-toast>
+            <div class="d-flex">
+                <div class="toast-body"><i class="fa-solid fa-circle-check"></i><span data-toast-message>Updated</span></div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <button class="back-to-top" type="button" data-back-top aria-label="Back to top" data-bs-title="Back to top" data-bs-toggle-tooltip>
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <section class="live-chat-widget" aria-label="Live chat support">
+        <button class="chat-fab" type="button" data-chat-toggle aria-label="Open live chat" data-bs-title="Live chat" data-bs-toggle-tooltip>
+            <i class="fa-solid fa-comments" aria-hidden="true"></i>
+            <span class="chat-unread badge rounded-pill" data-chat-unread>1</span>
+        </button>
+
+        <div class="chat-panel card" data-chat-panel aria-hidden="true">
+            <div class="chat-header">
+                <div class="chat-agent">
+                    <span class="chat-avatar" aria-hidden="true">N</span>
+                    <div>
+                        <h2>Customer Support</h2>
+                        <span><span class="online-dot"></span>Online</span>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="chat-icon-button" type="button" data-chat-minimize aria-label="Minimize chat">
+                        <i class="fa-solid fa-minus" aria-hidden="true"></i>
+                    </button>
+                    <button class="chat-icon-button" type="button" data-chat-close aria-label="Close chat">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-body" data-chat-body tabindex="0" aria-live="polite">
+                <article class="chat-message support">
+                    <div class="chat-bubble">
+                        <strong>Hi there!</strong>
+                        <p>Welcome to our website.</p>
+                        <p>How can we help you today?</p>
+                        <time data-chat-time>Just now</time>
+                    </div>
+                </article>
+            </div>
+
+            <div class="chat-quick-actions" aria-label="Quick chat actions">
+                <button class="btn btn-sm" type="button" data-chat-quick="Track Order"><i class="fa-solid fa-box-open"></i>Track Order</button>
+                <button class="btn btn-sm" type="button" data-chat-quick="Payment Help"><i class="fa-solid fa-credit-card"></i>Payment Help</button>
+                <button class="btn btn-sm" type="button" data-chat-quick="Shipping Information"><i class="fa-solid fa-truck-fast"></i>Shipping</button>
+                <button class="btn btn-sm" type="button" data-chat-quick="Product Inquiry"><i class="fa-solid fa-bag-shopping"></i>Product Inquiry</button>
+                <button class="btn btn-sm" type="button" data-chat-quick="Contact Support"><i class="fa-solid fa-headset"></i>Contact Support</button>
+            </div>
+
+            <div class="chat-contact-row">
+                <a class="btn btn-sm whatsapp" href="https://wa.me/12125550188" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-whatsapp"></i>WhatsApp
+                </a>
+                <a class="btn btn-sm email" href="mailto:support@novaatelier.example">
+                    <i class="fa-solid fa-envelope"></i>Email Us
+                </a>
+            </div>
+
+            <form class="chat-input-row" data-chat-form>
+                <label class="visually-hidden" for="chatMessage">Message</label>
+                <input id="chatMessage" type="text" placeholder="Type your message..." autocomplete="off" data-chat-input>
+                <button type="submit" aria-label="Send message">
+                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="site-footer container" id="footer">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <a class="brand" href="#top"><span class="brand-mark">N</span><span>Nova Atelier</span></a>
+                <p>Modern commerce for premium apparel, accessories, and intelligent discovery.</p>
+                <div class="contact-list">
+                    <span><i class="fa-solid fa-phone"></i>+1 212 555 0188</span>
+                    <span><i class="fa-solid fa-envelope"></i>care@novaatelier.example</span>
+                    <span><i class="fa-solid fa-location-dot"></i>SoHo, New York</span>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h3>Shop</h3>
+                <a href="#collections"><i class="fa-solid fa-gem"></i>Collections</a>
+                <a href="#products"><i class="fa-solid fa-bag-shopping"></i>Best sellers</a>
+                <a href="#assistant"><i class="fa-solid fa-robot"></i>Personalized edit</a>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h3>Support</h3>
+                <a href="#"><i class="fa-solid fa-box-open"></i>Order tracking</a>
+                <a href="#"><i class="fa-solid fa-rotate-left"></i>Returns</a>
+                <a href="#"><i class="fa-solid fa-envelope"></i>Contact</a>
+            </div>
+            <div class="col-lg-4">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                </div>
+                <p>Visa &middot; Mastercard &middot; Amex &middot; Stripe</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
