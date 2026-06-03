@@ -52,6 +52,9 @@
                 <button class="icon-button" type="button" data-theme-toggle aria-label="Toggle theme" data-bs-title="Toggle theme" data-bs-toggle-tooltip>
                     <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
                 </button>
+                <button class="icon-button" type="button" data-smart-search-open aria-label="Open smart search" data-bs-title="Smart search" data-bs-toggle-tooltip>
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                </button>
                 <button class="icon-button cart-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartCanvas" aria-controls="cartCanvas" aria-label="Open cart" data-bs-title="Cart" data-bs-toggle-tooltip>
                     <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                     <span class="badge rounded-pill counter-badge" data-cart-count>0</span>
@@ -121,6 +124,15 @@
             </div>
         </section>
 
+        <section class="container trust-band section-observe" aria-label="Trust and social proof">
+            <div class="trust-grid">
+                <div><i class="fa-solid fa-users-viewfinder"></i><strong data-live-visitors>184</strong><span>shopping now</span></div>
+                <div><i class="fa-solid fa-lock"></i><strong>SSL Secure</strong><span>encrypted checkout</span></div>
+                <div><i class="fa-solid fa-medal"></i><strong>4.9/5</strong><span>verified reviews</span></div>
+                <div><i class="fa-solid fa-rotate-left"></i><strong>30 days</strong><span>money-back guarantee</span></div>
+            </div>
+        </section>
+
         <section class="container section section-observe" id="collections">
             <div class="section-heading">
                 <p class="eyebrow"><i class="fa-solid fa-gem"></i> Featured collections</p>
@@ -159,7 +171,7 @@
                     </label>
                 </div>
                 <div class="col-6 col-lg-2">
-                    <button class="utility-button w-100" type="button" data-bs-title="Voice search" data-bs-toggle-tooltip><i class="fa-solid fa-microphone"></i><span>Voice</span></button>
+                    <button class="utility-button w-100" type="button" data-voice-search data-bs-title="Voice search" data-bs-toggle-tooltip><i class="fa-solid fa-microphone"></i><span>Voice</span></button>
                 </div>
                 <div class="col-6 col-lg-3">
                     <label class="sort-box w-100">
@@ -304,7 +316,33 @@
                 <span>Total</span>
                 <strong data-cart-total>$0</strong>
             </div>
-            <button class="button primary checkout" type="button"><i class="fa-solid fa-credit-card"></i>Checkout</button>
+            <button class="button primary checkout" type="button" data-checkout-open><i class="fa-solid fa-credit-card"></i>Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="smartSearchModal" tabindex="-1" aria-labelledby="smartSearchLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content smart-search-modal glass">
+                <button type="button" class="icon-button modal-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                <label class="smart-search-input" for="smartSearchInput">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="smartSearchInput" type="search" placeholder="Search jackets, accessories, silk, evening..." autocomplete="off" data-smart-search-input>
+                    <button type="button" aria-label="Start voice search" data-voice-search><i class="fa-solid fa-microphone"></i></button>
+                </label>
+                <div class="smart-search-body">
+                    <aside>
+                        <h2 id="smartSearchLabel">Smart Search</h2>
+                        <div class="suggestion-group">
+                            <span>Trending</span>
+                            <button type="button" data-search-term="tailored jacket">tailored jacket</button>
+                            <button type="button" data-search-term="crossbody">crossbody</button>
+                            <button type="button" data-search-term="limited">limited</button>
+                        </div>
+                        <div class="suggestion-group" data-recent-searches></div>
+                    </aside>
+                    <div class="smart-results" data-smart-results></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -318,6 +356,55 @@
         </div>
     </div>
 
+    <div class="modal fade" id="compareModal" tabindex="-1" aria-labelledby="compareLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content compare-modal">
+                <button type="button" class="icon-button modal-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                <div class="compare-header">
+                    <p class="eyebrow"><i class="fa-solid fa-code-compare"></i>Product comparison</p>
+                    <h2 id="compareLabel">Compare your shortlist.</h2>
+                </div>
+                <div class="compare-grid" data-compare-grid></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content checkout-modal">
+                <button type="button" class="icon-button modal-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                <div class="checkout-layout">
+                    <form class="checkout-form" data-checkout-form>
+                        <p class="eyebrow"><i class="fa-solid fa-credit-card"></i>Secure checkout</p>
+                        <h2 id="checkoutLabel">One-page guest checkout</h2>
+                        <div class="checkout-steps" aria-label="Checkout progress"><span class="active">Cart</span><span class="active">Shipping</span><span>Payment</span></div>
+                        <div class="row g-2">
+                            <div class="col-md-6"><input class="form-control" type="text" placeholder="Full name" required></div>
+                            <div class="col-md-6"><input class="form-control" type="email" placeholder="Email" required></div>
+                            <div class="col-12"><input class="form-control" type="text" placeholder="Shipping address" required></div>
+                            <div class="col-md-6"><select class="form-select" data-shipping-method><option value="0">Standard shipping - Free</option><option value="18">Express shipping - $18</option></select></div>
+                            <div class="col-md-6"><input class="form-control" type="text" placeholder="Card number" inputmode="numeric" required></div>
+                        </div>
+                        <div class="payment-row">
+                            <label><input type="radio" name="payment" checked> Card</label>
+                            <label><input type="radio" name="payment"> PayPal</label>
+                            <label><input type="radio" name="payment"> UPI</label>
+                        </div>
+                        <button class="button primary" type="submit"><i class="fa-solid fa-lock"></i>Place Secure Order</button>
+                    </form>
+                    <aside class="checkout-summary">
+                        <h3>Order summary</h3>
+                        <div data-checkout-items></div>
+                        <div class="summary-line"><span>Subtotal</span><strong data-checkout-subtotal>$0</strong></div>
+                        <div class="summary-line"><span>Shipping</span><strong data-checkout-shipping>Free</strong></div>
+                        <div class="summary-line total"><span>Total</span><strong data-checkout-total>$0</strong></div>
+                        <div class="secure-badges"><span><i class="fa-solid fa-shield-halved"></i> SSL</span><span><i class="fa-solid fa-rotate-left"></i> Returns</span><span><i class="fa-solid fa-truck-fast"></i> Free shipping</span></div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div class="toast align-items-center site-toast" role="status" aria-live="polite" aria-atomic="true" data-toast>
             <div class="d-flex">
@@ -326,6 +413,8 @@
             </div>
         </div>
     </div>
+
+    <div class="purchase-pop glass" data-purchase-pop aria-live="polite"></div>
 
     <button class="back-to-top" type="button" data-back-top aria-label="Back to top" data-bs-title="Back to top" data-bs-toggle-tooltip>
         <i class="fa-solid fa-arrow-up"></i>

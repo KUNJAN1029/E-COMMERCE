@@ -135,10 +135,17 @@ const state = {
     sort: "featured",
     cart: [],
     wishlist: new Set(),
+    compare: new Set(),
+    searchHistory: [],
+    smartQuery: "",
+    smartActiveIndex: 0,
     discount: 0
 };
 
 let quickViewModal;
+let smartSearchModal;
+let compareModal;
+let checkoutModal;
 let cartCanvas;
 let toast;
 let chatUnreadCount = 1;
@@ -149,13 +156,19 @@ const money = (value) => `$${Math.round(value).toLocaleString("en-US")}`;
 
 function init() {
     restoreTheme();
+    restoreCommerceState();
     initBootstrap();
     renderSkeletons();
     renderCart();
+    updateWishlistCount();
+    renderCompare();
+    renderRecentSearches();
+    renderSmartSearch();
     renderRecommendation("work");
     bindEvents();
     observeSections();
     initTilt();
+    startSocialProof();
     setTimeout(() => {
         renderProducts();
         $("[data-loader]")?.classList.add("hidden");
@@ -165,16 +178,32 @@ function init() {
 function initBootstrap() {
     if (!window.bootstrap) return;
     $$("[data-bs-toggle-tooltip]").forEach((item) => new bootstrap.Tooltip(item));
+    const smartSearch = $("#smartSearchModal");
     const quickView = $("#quickViewModal");
+    const compare = $("#compareModal");
+    const checkout = $("#checkoutModal");
     const cart = $("#cartCanvas");
     const toastElement = $("[data-toast]");
+    if (smartSearch) smartSearchModal = new bootstrap.Modal(smartSearch);
     if (quickView) quickViewModal = new bootstrap.Modal(quickView);
+    if (compare) compareModal = new bootstrap.Modal(compare);
+    if (checkout) checkoutModal = new bootstrap.Modal(checkout);
     if (cart) cartCanvas = new bootstrap.Offcanvas(cart);
     if (toastElement) toast = new bootstrap.Toast(toastElement, { delay: 2200 });
 }
 
 function bindEvents() {
     $("[data-theme-toggle]")?.addEventListener("click", toggleTheme);
+    $("[data-smart-search-open]")?.addEventListener("click", openSmartSearch);
+    $$("[data-voice-search]").forEach((button) => {
+        button.addEventListener("click", startVoiceSearch);
+    });
+    $("[data-smart-search-input]")?.addEventListener("input", (event) => {
+        state.smartQuery = event.target.value;
+        state.smartActiveIndex = 0;
+        renderSmartSearch();
+    });
+    $("[data-smart-search-input]")?.addEventListener("keydown", handleSmartSearchKeys);
     $("[data-search]")?.addEventListener("input", (event) => {
         state.search = event.target.value.trim().toLowerCase();
         renderProducts();
@@ -208,6 +237,9 @@ function bindEvents() {
     });
 
     $("[data-apply-coupon]")?.addEventListener("click", applyCoupon);
+    $("[data-checkout-open]")?.addEventListener("click", openCheckout);
+    $("[data-shipping-method]")?.addEventListener("change", renderCheckout);
+    $("[data-checkout-form]")?.addEventListener("submit", completeCheckout);
     $("[data-newsletter]")?.addEventListener("submit", handleNewsletter);
     $("[data-back-top]")?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
     $("[data-chat-time]").textContent = getChatTime();
@@ -217,6 +249,9 @@ function bindEvents() {
     $("[data-chat-form]")?.addEventListener("submit", handleChatSubmit);
     $$("[data-chat-quick]").forEach((button) => {
         button.addEventListener("click", () => sendChatMessage(button.dataset.chatQuick));
+    });
+    $$("[data-search-term]").forEach((button) => {
+        button.addEventListener("click", () => useSmartSearchTerm(button.dataset.searchTerm));
     });
 
     document.addEventListener("click", handleProductActions);
@@ -228,6 +263,30 @@ function bindEvents() {
     document.addEventListener("mousemove", handleMagneticButtons);
     window.addEventListener("scroll", handleScroll, { passive: true });
     updateChatUnread();
+}
+
+function restoreCommerceState() {
+    try {
+        const saved = JSON.parse(localStorage.getItem("nova-commerce") || "{}");
+        state.cart = Array.isArray(saved.cart) ? saved.cart.filter((item) => products.some((product) => product.id === item.id)) : [];
+        state.wishlist = new Set(Array.isArray(saved.wishlist) ? saved.wishlist : []);
+        state.compare = new Set(Array.isArray(saved.compare) ? saved.compare.slice(0, 4) : []);
+        state.searchHistory = Array.isArray(saved.searchHistory) ? saved.searchHistory.slice(0, 6) : [];
+    } catch {
+        state.cart = [];
+        state.wishlist = new Set();
+        state.compare = new Set();
+        state.searchHistory = [];
+    }
+}
+
+function saveCommerceState() {
+    localStorage.setItem("nova-commerce", JSON.stringify({
+        cart: state.cart,
+        wishlist: [...state.wishlist],
+        compare: [...state.compare],
+        searchHistory: state.searchHistory
+    }));
 }
 
 function renderSkeletons() {
@@ -261,7 +320,7 @@ function renderProducts() {
                     <span class="badge rounded-pill product-badge">${product.badge}</span>
                     <div class="product-actions">
                         <button class="icon-button wishlist ${state.wishlist.has(product.id) ? "active" : ""}" type="button" data-wishlist="${product.id}" aria-label="Add ${product.name} to wishlist" data-bs-title="Wishlist" data-bs-toggle-tooltip><i class="fa-solid fa-heart"></i></button>
-                        <button class="icon-button" type="button" data-compare="${product.id}" aria-label="Compare ${product.name}" data-bs-title="Compare" data-bs-toggle-tooltip><i class="fa-solid fa-code-compare"></i></button>
+                        <button class="icon-button compare ${state.compare.has(product.id) ? "active" : ""}" type="button" data-compare="${product.id}" aria-label="Compare ${product.name}" data-bs-title="Compare" data-bs-toggle-tooltip><i class="fa-solid fa-code-compare"></i></button>
                         <button class="icon-button" type="button" data-share="${product.id}" aria-label="Share ${product.name}" data-bs-title="Share" data-bs-toggle-tooltip><i class="fa-solid fa-share-nodes"></i></button>
                     </div>
                     <img src="${product.image}" data-hover="${product.hover}" data-original="${product.image}" alt="${product.name}">
@@ -316,7 +375,7 @@ function handleProductActions(event) {
     if (removeButton) removeFromCart(Number(removeButton.dataset.remove));
     if (incButton) changeQuantity(Number(incButton.dataset.increase), 1);
     if (decButton) changeQuantity(Number(decButton.dataset.decrease), -1);
-    if (compareButton) showToast("Added to comparison tray.");
+    if (compareButton) toggleCompare(Number(compareButton.dataset.compare));
     if (shareButton) shareProduct(Number(shareButton.dataset.share));
 }
 
@@ -326,6 +385,7 @@ function addToCart(id) {
     else state.cart.push({ id, qty: 1 });
     state.discount = 0;
     renderCart(true);
+    saveCommerceState();
     showToast("Added to cart.");
     cartCanvas?.show();
 }
@@ -333,6 +393,7 @@ function addToCart(id) {
 function removeFromCart(id) {
     state.cart = state.cart.filter((item) => item.id !== id);
     renderCart(true);
+    saveCommerceState();
     showToast("Removed from cart.");
 }
 
@@ -341,7 +402,10 @@ function changeQuantity(id, amount) {
     if (!item) return;
     item.qty += amount;
     if (item.qty <= 0) removeFromCart(id);
-    else renderCart(true);
+    else {
+        renderCart(true);
+        saveCommerceState();
+    }
 }
 
 function toggleWishlist(id) {
@@ -354,6 +418,25 @@ function toggleWishlist(id) {
     }
     renderProducts();
     updateWishlistCount(true);
+    saveCommerceState();
+}
+
+function toggleCompare(id) {
+    if (state.compare.has(id)) {
+        state.compare.delete(id);
+        showToast("Removed from comparison.");
+    } else {
+        if (state.compare.size >= 4) {
+            showToast("Compare up to 4 products.");
+            return;
+        }
+        state.compare.add(id);
+        showToast("Added to comparison.");
+    }
+    saveCommerceState();
+    renderProducts();
+    renderCompare();
+    compareModal?.show();
 }
 
 function renderCart(animate = false) {
@@ -371,6 +454,7 @@ function renderCart(animate = false) {
     }
     const totalElement = $("[data-cart-total]");
     if (totalElement) totalElement.textContent = money(total);
+    renderCheckout();
     const itemsElement = $("[data-cart-items]");
     if (!itemsElement) return;
 
@@ -415,6 +499,7 @@ function applyCoupon() {
     state.discount = input.value.trim().toUpperCase() === "NOVA15" ? 0.15 : 0;
     input.value = state.discount ? "NOVA15 applied" : "Try NOVA15";
     renderCart(true);
+    saveCommerceState();
     showToast(state.discount ? "Coupon applied." : "Coupon not recognized.");
 }
 
@@ -461,6 +546,190 @@ function renderRecommendation(mood) {
     `;
 }
 
+function openSmartSearch() {
+    smartSearchModal?.show();
+    setTimeout(() => $("[data-smart-search-input]")?.focus(), 180);
+    renderSmartSearch();
+}
+
+function useSmartSearchTerm(term) {
+    state.smartQuery = term;
+    const input = $("[data-smart-search-input]");
+    if (input) input.value = term;
+    renderSmartSearch();
+}
+
+function handleSmartSearchKeys(event) {
+    const results = getSmartResults();
+    if (event.key === "ArrowDown") {
+        event.preventDefault();
+        state.smartActiveIndex = Math.min(state.smartActiveIndex + 1, Math.max(results.length - 1, 0));
+        renderSmartSearch();
+    }
+    if (event.key === "ArrowUp") {
+        event.preventDefault();
+        state.smartActiveIndex = Math.max(state.smartActiveIndex - 1, 0);
+        renderSmartSearch();
+    }
+    if (event.key === "Enter" && results[state.smartActiveIndex]) {
+        event.preventDefault();
+        selectSmartResult(results[state.smartActiveIndex].id);
+    }
+}
+
+function getSmartResults() {
+    const rawQuery = state.smartQuery.trim().toLowerCase();
+    const correctedQuery = correctQuery(rawQuery);
+    const query = correctedQuery || rawQuery;
+    if (!query) return products.slice(0, 4);
+    return products
+        .map((product) => {
+            const haystack = `${product.name} ${product.category} ${product.badge} ${product.description}`.toLowerCase();
+            const nameScore = product.name.toLowerCase().includes(query) ? 4 : 0;
+            const categoryScore = product.category.includes(query) || product.badge.toLowerCase().includes(query) ? 2 : 0;
+            const textScore = haystack.includes(query) ? 1 : 0;
+            return { ...product, searchScore: nameScore + categoryScore + textScore };
+        })
+        .filter((product) => product.searchScore > 0)
+        .sort((a, b) => b.searchScore - a.searchScore || b.rating - a.rating)
+        .slice(0, 6);
+}
+
+function correctQuery(query) {
+    const dictionary = {
+        jaket: "jacket",
+        jcket: "jacket",
+        bagg: "bag",
+        sunglass: "sunglasses",
+        snaker: "sneaker",
+        accesory: "accessory",
+        dres: "dress"
+    };
+    return dictionary[query] || "";
+}
+
+function renderSmartSearch() {
+    const resultsElement = $("[data-smart-results]");
+    if (!resultsElement) return;
+    const corrected = correctQuery(state.smartQuery.trim().toLowerCase());
+    const results = getSmartResults();
+    resultsElement.innerHTML = `
+        ${corrected ? `<button class="typo-chip" type="button" data-search-term="${corrected}">Showing results for ${corrected}</button>` : ""}
+        ${results.map((product, index) => `
+            <button class="smart-result ${index === state.smartActiveIndex ? "active" : ""}" type="button" data-smart-result="${product.id}">
+                <img src="${product.image}" alt="${product.name}">
+                <span><strong>${product.name}</strong><small>${product.category} &middot; ${product.badge} &middot; ${money(product.price)}</small></span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        `).join("") || `<p class="empty-state">No exact match. Try jacket, tote, dress, or limited.</p>`}
+    `;
+    $$("[data-smart-result]").forEach((button) => {
+        button.addEventListener("click", () => selectSmartResult(Number(button.dataset.smartResult)));
+    });
+    $$("[data-search-term]", resultsElement).forEach((button) => {
+        button.addEventListener("click", () => useSmartSearchTerm(button.dataset.searchTerm));
+    });
+    renderRecentSearches();
+}
+
+function renderRecentSearches() {
+    const element = $("[data-recent-searches]");
+    if (!element) return;
+    element.innerHTML = state.searchHistory.length
+        ? `<span>Recent</span>${state.searchHistory.map((term) => `<button type="button" data-search-term="${term}">${term}</button>`).join("")}`
+        : `<span>Recent</span><small>Your searches will appear here</small>`;
+    $$("[data-search-term]", element).forEach((button) => {
+        button.addEventListener("click", () => useSmartSearchTerm(button.dataset.searchTerm));
+    });
+}
+
+function selectSmartResult(id) {
+    const product = products.find((entry) => entry.id === id);
+    const query = (state.smartQuery.trim() || product.name).toLowerCase();
+    state.searchHistory = [query, ...state.searchHistory.filter((term) => term !== query)].slice(0, 6);
+    saveCommerceState();
+    state.search = product.name.toLowerCase();
+    const pageSearch = $("[data-search]");
+    if (pageSearch) pageSearch.value = product.name;
+    renderProducts();
+    smartSearchModal?.hide();
+    document.querySelector("#products")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => openQuickView(id), 360);
+}
+
+function startVoiceSearch() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        showToast("Voice search is not supported in this browser.");
+        return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.onresult = (event) => {
+        useSmartSearchTerm(event.results[0][0].transcript);
+        openSmartSearch();
+    };
+    recognition.start();
+}
+
+function renderCompare() {
+    const grid = $("[data-compare-grid]");
+    if (!grid) return;
+    const compared = [...state.compare].map((id) => products.find((product) => product.id === id)).filter(Boolean);
+    grid.innerHTML = compared.length ? compared.map((product) => `
+        <article class="compare-card">
+            <img src="${product.image}" alt="${product.name}">
+            <button class="icon-button" type="button" data-compare="${product.id}" aria-label="Remove ${product.name}"><i class="fa-solid fa-xmark"></i></button>
+            <h3>${product.name}</h3>
+            <strong>${money(product.price)}</strong>
+            <p>${product.description}</p>
+            <span>${renderStars(product.rating)}</span>
+            <small>${product.inventory}</small>
+        </article>
+    `).join("") : `<p class="empty-state">Add products with the compare icon to build a side-by-side shortlist.</p>`;
+}
+
+function openCheckout() {
+    if (!state.cart.length) {
+        showToast("Your cart is empty.");
+        return;
+    }
+    renderCheckout();
+    cartCanvas?.hide();
+    checkoutModal?.show();
+}
+
+function getCartSubtotal() {
+    return state.cart.reduce((sum, item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        return product ? sum + product.price * item.qty : sum;
+    }, 0) * (1 - state.discount);
+}
+
+function renderCheckout() {
+    const items = $("[data-checkout-items]");
+    if (!items) return;
+    const subtotal = getCartSubtotal();
+    const shipping = Number($("[data-shipping-method]")?.value || 0);
+    items.innerHTML = state.cart.map((item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        return product ? `<div class="checkout-item"><span>${product.name} x ${item.qty}</span><strong>${money(product.price * item.qty)}</strong></div>` : "";
+    }).join("") || `<p class="empty-state">No items yet.</p>`;
+    $("[data-checkout-subtotal]").textContent = money(subtotal);
+    $("[data-checkout-shipping]").textContent = shipping ? money(shipping) : "Free";
+    $("[data-checkout-total]").textContent = money(subtotal + shipping);
+}
+
+function completeCheckout(event) {
+    event.preventDefault();
+    state.cart = [];
+    state.discount = 0;
+    renderCart(true);
+    saveCommerceState();
+    checkoutModal?.hide();
+    showToast("Order placed securely.");
+}
+
 function shareProduct(id) {
     const product = products.find((entry) => entry.id === id);
     if (navigator.share) {
@@ -494,6 +763,27 @@ function handleScroll() {
     const isScrolled = window.scrollY > 18;
     $("[data-header]")?.classList.toggle("scrolled", isScrolled);
     $("[data-back-top]")?.classList.toggle("visible", window.scrollY > 650);
+}
+
+function startSocialProof() {
+    const visitors = $("[data-live-visitors]");
+    const pop = $("[data-purchase-pop]");
+    const names = ["Maya", "Daniel", "Priya", "Alex", "Noor"];
+    let index = 0;
+
+    setInterval(() => {
+        if (visitors) visitors.textContent = String(176 + Math.floor(Math.random() * 34));
+    }, 3600);
+
+    if (!pop) return;
+    setInterval(() => {
+        const product = products[index % products.length];
+        const name = names[index % names.length];
+        pop.innerHTML = `<i class="fa-solid fa-bag-shopping"></i><span>${name} purchased ${product.name}</span>`;
+        pop.classList.add("visible");
+        setTimeout(() => pop.classList.remove("visible"), 4200);
+        index += 1;
+    }, 7600);
 }
 
 function observeSections() {
